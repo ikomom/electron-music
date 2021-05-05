@@ -5,16 +5,22 @@
       src="../assets/logo.png"
     >
     你好世界，好不好
-    <button @click="increase">
+    <el-button
+      @click="increase"
+      type="primary"
+    >
       加1s
-    </button>
-    <button @click="reset">
+    </el-button>
+    <el-button @click="reset">
       reset
-    </button>
-    <button @click="getBaidu">
+    </el-button>
+    <el-button @click="getBaidu">
       getBaidu
-    </button>
-    <HelloWorld :msg="`Welcome to Your Vue.js App ${index}`" />
+    </el-button>
+    <HelloWorld
+      class="dragButton"
+      :msg="`Welcome to Your Vue.js App ${index}`"
+    />
   </div>
 </template>
 
@@ -54,3 +60,13 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+.home {
+  padding: 10px;
+  border: 1px solid $test-red;
+
+  .dragButton {
+    @include app-region-draggable(no-drag);
+  }
+}
+</style>

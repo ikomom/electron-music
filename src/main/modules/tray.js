@@ -24,9 +24,7 @@ const createTray = function (Tray) {
         global.trayWindow.show();
     });
     appTray.on('click', (event, bounds) => {
-      if (global.mainWindow.isVisible()) {
-        global.mainWindow.hide()
-      } else {
+      if (!global.mainWindow.isVisible()) {
         global.mainWindow.show()
       }
     })

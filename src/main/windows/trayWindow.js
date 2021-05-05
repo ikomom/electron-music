@@ -1,9 +1,6 @@
-import { LOAD_URL } from "../config";
+import {JOIN_URL} from "../config";
 
-const trayWinURL =
-    process.env.NODE_ENV === "development"
-        ? `http://localhost:8080/#tray`
-        : `${LOAD_URL}#tray`;
+const trayWinURL = JOIN_URL('#tray');
 let trayWindow = null;
 /**
  * 创建托盘菜单

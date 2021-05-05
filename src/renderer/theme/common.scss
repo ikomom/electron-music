@@ -1,0 +1,5 @@
+$test-red: red;
+
+@mixin app-region-draggable($drag) {
+  -webkit-app-region: $drag;
+}

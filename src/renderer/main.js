@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import store from './store'
 import router from './router'
+// plugins 导入
+import './plugins/element-ui'
 
 Vue.config.productionTip = false
 

@@ -78,6 +78,9 @@ module.exports = {
         },
         javascriptEnabled: true,
       },
+      scss: {
+        additionalData: `@import "~@/theme/common.scss";`
+      }
     },
     requireModuleExtension: true,
 

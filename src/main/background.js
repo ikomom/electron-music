@@ -23,8 +23,8 @@ async function createWindow() {
     height: 800,
     show: true,
     title: process.platform === "win32" ? "网易云音乐" : "",
-    frame: isDevelopment,
-    // titleBarStyle: "hiddenInset",
+    frame: isDevelopment,// 无边框
+    titleBarStyle: "hiddenInset",// mac上隐藏标题但操作不变
 
     // backgroundColor: "#2e2c29",
     webPreferences: {
