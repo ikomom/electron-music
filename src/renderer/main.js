@@ -4,6 +4,7 @@ import store from './store'
 import router from './router'
 // plugins 导入
 import './plugins/element-ui'
+import './plugins/global-use'
 
 Vue.config.productionTip = false
 

@@ -25,7 +25,6 @@ async function createWindow() {
     title: process.platform === "win32" ? "网易云音乐" : "",
     frame: isDevelopment,// 无边框
     titleBarStyle: "hiddenInset",// mac上隐藏标题但操作不变
-
     // backgroundColor: "#2e2c29",
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone

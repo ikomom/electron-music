@@ -85,6 +85,25 @@ module.exports = {
     requireModuleExtension: true,
 
   },
+  chainWebpack(config) {
+    // 本地svg图标处理
+    // https://juejin.cn/post/6844903517564436493#heading-0
+    config.module
+      .rule('svg')
+      .exclude.add(resolve('src/renderer/assets/svg'))
+      .end()
+    config.module
+      .rule('icons')
+      .test(/\.svg$/)
+      .include.add(resolve('src/renderer/assets/svg'))
+      .end()
+      .use('svg-sprite-loader')
+      .loader('svg-sprite-loader')
+      .options({
+        symbolId: 'icon-[name]'
+      })
+      .end()
+  },
   pluginOptions: {
     // vue-cli-plugin-electron-builder配置
     // https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/configuration.html#configuring-electron-builder

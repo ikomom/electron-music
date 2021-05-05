@@ -1,31 +1,40 @@
 <template>
   <div id="app">
-    <!--    <div id="nav">-->
-    <!--      <router-link to="/">Home</router-link> |-->
-    <!--      <router-link to="/about">About</router-link>-->
-    <!--    </div>-->
     <router-view />
   </div>
 </template>
-<!--<style>-->
-<!--#app {-->
-<!--  font-family: Avenir, Helvetica, Arial, sans-serif;-->
-<!--  -webkit-font-smoothing: antialiased;-->
-<!--  -moz-osx-font-smoothing: grayscale;-->
-<!--  text-align: center;-->
-<!--  color: #2c3e50;-->
-<!--}-->
+<style>
+/*阿里图标库*/
+@import "//at.alicdn.com/t/font_2527280_d3q0jb6i37l.css";
 
-<!--#nav {-->
-<!--  padding: 30px;-->
-<!--}-->
+body {
+  margin: 0
+}
+::-webkit-scrollbar {
+  /*滚动条整体样式*/
+  width : 10px;  /*高宽分别对应横竖滚动条的尺寸*/
+  height: 1px;
+}
+::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+  border-radius   : 10px;
+  background-color: darkred;
+  background-image: -webkit-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.2) 75%,
+      transparent 75%,
+      transparent
+  );
+}
+::-webkit-scrollbar-track {
+  /*滚动条里面轨道*/
+  box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background   : #ededed;
+  border-radius: 10px;
+}
 
-<!--#nav a {-->
-<!--  font-weight: bold;-->
-<!--  color: #2c3e50;-->
-<!--}-->
-
-<!--#nav a.router-link-exact-active {-->
-<!--  color: #42b983;-->
-<!--}-->
-<!--</style>-->
+</style>

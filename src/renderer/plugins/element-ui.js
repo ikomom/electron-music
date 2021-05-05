@@ -6,10 +6,10 @@ import {
   // Dropdown,
   // DropdownMenu,
   // DropdownItem,
-  // Menu,
-  // Submenu,
-  // MenuItem,
-  // MenuItemGroup,
+  Menu,
+  Submenu,
+  MenuItem,
+  MenuItemGroup,
   // Input,
   // InputNumber,
   // Radio,
@@ -59,11 +59,11 @@ import {
   // Cascader,
   // ColorPicker,
   // Transfer,
-  // Container,
-  // Header,
-  // Aside,
-  // Main,
-  // Footer,
+  Container,
+  Header,
+  Aside,
+  Main,
+  Footer,
   // Timeline,
   // TimelineItem,
   // Link,
@@ -89,10 +89,10 @@ import '../theme/element-variables.scss'
 // Vue.use(Dropdown);
 // Vue.use(DropdownMenu);
 // Vue.use(DropdownItem);
-// Vue.use(Menu);
-// Vue.use(Submenu);
-// Vue.use(MenuItem);
-// Vue.use(MenuItemGroup);
+Vue.use(Menu);
+Vue.use(Submenu);
+Vue.use(MenuItem);
+Vue.use(MenuItemGroup);
 // Vue.use(Input);
 // Vue.use(InputNumber);
 // Vue.use(Radio);
@@ -142,11 +142,11 @@ Vue.use(CarouselItem);
 // Vue.use(Cascader);
 // Vue.use(ColorPicker);
 // Vue.use(Transfer);
-// Vue.use(Container);
-// Vue.use(Header);
-// Vue.use(Aside);
-// Vue.use(Main);
-// Vue.use(Footer);
+Vue.use(Container);
+Vue.use(Header);
+Vue.use(Aside);
+Vue.use(Main);
+Vue.use(Footer);
 // Vue.use(Timeline);
 // Vue.use(TimelineItem);
 // Vue.use(Link);

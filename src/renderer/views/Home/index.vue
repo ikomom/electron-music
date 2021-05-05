@@ -2,7 +2,7 @@
   <div class="home">
     <img
       alt="Vue logo"
-      src="../assets/logo.png"
+      src="../../assets/logo.png"
     >
     你好世界，好不好
     <el-button

@@ -12,7 +12,8 @@
     "electron:serve": "vue-cli-service electron:serve",
     "electron:build": "vue-cli-service electron:build",
     "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps"
+    "postuninstall": "electron-builder install-app-deps",
+    "svgo": "svgo -f src/renderer/assets/svg --config=svgo.yml"
   },
   "appId": "com.ikonon.cloudMusic",
   "main": "background.js",
@@ -40,6 +41,7 @@
     "less-loader": "^5.0.0",
     "sass": "^1.32.12",
     "sass-loader": "^10.1.1",
+    "svg-sprite-loader": "^6.0.6",
     "vue-cli-plugin-electron-builder": "~2.0.0-rc.6",
     "vue-template-compiler": "^2.6.11"
   },
@@ -47,6 +49,9 @@
     "root": true,
     "env": {
       "node": true
+    },
+    "rules": {
+      "no-debugger": "off"
     },
     "extends": [
       "plugin:vue/strongly-recommended",
