@@ -26,7 +26,10 @@
         v-for="(item, index) in bannerList"
         :key="index"
       >
-        <el-image :src="item.imageUrl" />
+        <el-image
+          draggable="false"
+          :src="item.imageUrl"
+        />
         <!--        <h3 class="medium">-->
         <!--          {{ item }}-->
         <!--        </h3>-->
