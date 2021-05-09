@@ -25,10 +25,10 @@ request.interceptors.request.use(
 
 request.interceptors.response.use(
   (response) => {
-    if (response.code && response.code === 200) {
-      return response;
+    if (response.status && response.status === 200) {
+      return response.data;
     }
-    Notification.warning(response.msg || response.statusText || "Response error");
+    Notification.warning(response.statusText || "Response error");
     return Promise.reject(response);
   },
   (error) => {
