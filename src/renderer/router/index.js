@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import {IS_ELECTRON} from "@/config/environment";
+
 import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
@@ -26,7 +28,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: process.env.IS_ELECTRON ? 'hash' : 'history',
+  mode: IS_ELECTRON ? 'hash' : 'history',
   routes
 })
 

@@ -57,7 +57,7 @@ async function createWindow() {
   } else {
     createProtocol(ACHEME)
     // Load the index.html when not in development
-    win.loadURL(LOAD_URL)
+    await win.loadURL(LOAD_URL)
   }
 }
 
@@ -88,7 +88,7 @@ app.on('ready', async () => {
       console.error('Vue Devtools failed to install:', e.toString())
     }
   }
-  createWindow()
+  await createWindow()
 })
 
 // Exit cleanly on request from parent process in development mode.
