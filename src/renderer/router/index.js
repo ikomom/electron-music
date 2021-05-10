@@ -3,6 +3,9 @@ import VueRouter from 'vue-router'
 // import Home from '../views/Home.vue'
 import BaseLayout from "@/layouts/BaseLayout";
 import {recommendRoutes} from "@/router/modules/recommend";
+import {IS_ELECTRON} from "@/config/environment";
+
+import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -32,7 +35,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: process.env.IS_ELECTRON ? 'hash' : 'history',
+  mode: IS_ELECTRON ? 'hash' : 'history',
   routes
 })
 

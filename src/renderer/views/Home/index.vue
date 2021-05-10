@@ -17,6 +17,24 @@
     <el-button @click="getBaidu">
       getBaidu
     </el-button>
+    <el-carousel
+      :interval="4000"
+      type="card"
+      height="200px"
+    >
+      <el-carousel-item
+        v-for="(item, index) in bannerList"
+        :key="index"
+      >
+        <el-image
+          draggable="false"
+          :src="item.imageUrl"
+        />
+        <!--        <h3 class="medium">-->
+        <!--          {{ item }}-->
+        <!--        </h3>-->
+      </el-carousel-item>
+    </el-carousel>
     <HelloWorld
       class="dragButton"
       :msg="`Welcome to Your Vue.js App ${index}`"
@@ -28,7 +46,8 @@
 // @ is an alias to /src
 
 import HelloWorld from "@/components/HelloWorld";
-import axios from 'axios';
+import {getBanner} from "@/api/banner";
+import log from "@/utils/log-util";
 
 export default {
   name: 'Home',
@@ -37,7 +56,8 @@ export default {
   },
   data() {
     return {
-      index: 0
+      index: 0,
+      bannerList: []
     }
   },
   created() {
@@ -45,8 +65,11 @@ export default {
   },
   methods: {
     getBaidu() {
-      axios.get('https://www.baidu.com').then(res => {
-        console.log(res)
+      getBanner().then(res => {
+        log('getBanner', res)
+        if (res.code === 200) {
+          this.bannerList = res.banners
+        }
       })
     },
     increase() {
@@ -67,6 +90,14 @@ export default {
 
   .dragButton {
     @include app-region-draggable(no-drag);
+  }
+
+  .el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+  }
+
+  .el-carousel__item:nth-child(2n+1) {
+    background-color: #d3dce6;
   }
 }
 </style>
