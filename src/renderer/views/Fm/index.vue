@@ -1,6 +1,12 @@
 <template>
   <div>
-    <canvas ref="canvas" />
+    {{ timeText }}
+    <canvas
+      ref="canvas"
+      :width="canvasLayout.width"
+      :height="canvasLayout.height"
+      @mousemove="onMouseMove"
+    />
   </div>
 </template>
 
@@ -11,30 +17,115 @@ export default {
   name: "Fm",
   data() {
     return {
-      img: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg93.pp.sohu.com%2Fimages%2Fblog%2F2006%2F10%2F18%2F17%2F13%2F10eee8d2901.jpg&refer=http%3A%2F%2Fimg93.pp.sohu.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1629883945&t=9e7a0f2745d8204bee2ad2d8ecf9e834',
+      timeText: '',
+      img: 'https://ztifly.oss-cn-hangzhou.aliyuncs.com/%E6%B2%B9%E7%94%BB.jpeg',
       brush: new RBush(9),
+      canvasLayout: {
+        width: 800,
+        height: 600
+      },
+      reactSize: 120,
+      bbox: {},
+      memCtx: null,
+      memCanv: null
     }
   },
   created() {
-    const item = {
-      minX: 20,
-      minY: 40,
-      maxX: 30,
-      maxY: 50,
-      foo: 'bar'
-    };
-    this.brush.insert(item)
-    console.log('========', this.brush)
-    const result = this.brush.search({
-      minX: 10,
-      minY: 20,
-      maxX: 80,
-      maxY: 70
-    });
-    console.log('result', result)
+    this.memCanvas()
+    this.fillCanvas()
+    this.loadItems()
+  },
+  mounted() {
+
+  },
+  computed: {
+    ctx() {
+      return this.$refs.canvas?.getContext('2d')
+    }
   },
   methods: {
+    // 填充背景
+    fillCanvas() {
+      const {width, height} = this.canvasLayout;
+      const img = new Image();
+      img.src = this.img;
+      img.width = width;
+      img.height = height;
 
+      img.onload = () => {
+        this.ctx.drawImage(img, 0, 0, width, height);
+        // 填充矩形
+        this.memCtx.stroke()
+        this.ctx.drawImage(this.memCanv, 0, 0)
+        this.pattern = this.ctx.createPattern(img, '');
+        // console.log('pattern', pattern)
+        // this.ctx.fillStyle = pattern
+        // this.ctx.fillRect(0, 0, 200, 100)
+      }
+    },
+    // 加载项目
+    loadItems(n = 1000) {
+      console.time('generateReact')
+      let items = []
+      for (let i = 0; i < n; i++) {
+        const item = this.randomRect()
+        items.push(item)
+        this.memCtx.rect(
+          item.minX,
+          item.minY,
+          item.maxX - item.minX,
+          item.maxY - item.minY
+        )
+      }
+      console.timeEnd('generateReact')
+      console.time('loadItem')
+      this.brush.load(items)
+      console.timeEnd('loadItem')
+    },
+    // 随机矩形
+    randomRect() {
+      const {width, height} = this.canvasLayout;
+      const rect = {}
+      rect.minX = Math.random() * width
+      rect.maxX = rect.minX + Math.random() * this.reactSize
+      rect.minY = Math.random() * height
+      rect.maxY = rect.minY + Math.random() * this.reactSize
+      rect.name = 'rect' + new Date().getTime()
+      return rect
+    },
+    // 新建canvas
+    memCanvas() {
+      const {width, height} = this.canvasLayout;
+      this.memCanv = document.createElement('canvas')
+      this.memCanv.height = height
+      this.memCanv.width = width
+      this.memCtx = this.memCanv.getContext('2d')
+      this.memCtx.strokeStyle = 'rgba(0,0,255,0.7)'
+    },
+    onMouseMove(e) {
+      this.ctx.clearRect(0, 0, this.canvasLayout.width, this.canvasLayout.height);
+      const x = e.offsetX
+      const y = e.offsetY
+      this.bbox.minX = x - 20
+      this.bbox.maxX = x + 20
+      this.bbox.minY = y - 20
+      this.bbox.maxY = y + 20
+      const start = performance.now()
+      const res = this.brush.search(this.bbox)
+      this.ctx.fillStyle = this.pattern
+      this.ctx.strokeStyle = 'rgba(212,22,22,0.7)'
+      res.forEach((item) => {
+        this.ctx.rect(
+          item.minX,
+          item.minY,
+          item.maxX - item.minX,
+          item.maxY - item.minY
+        )
+      })
+      this.ctx.fill()
+      this.timeText =
+        'Search Time (ms): ' + (performance.now() - start).toFixed(3)
+    }
   }
 }
 </script>
