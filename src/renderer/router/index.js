@@ -5,7 +5,6 @@ import BaseLayout from "@/layouts/BaseLayout";
 import {recommendRoutes} from "@/router/modules/recommend";
 import {IS_ELECTRON} from "@/config/environment";
 
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 

@@ -7,17 +7,9 @@ yarn install
 
 ### Compiles and hot-reloads for development
 ```
-yarn serve
-```
+electron:debug # debug包
+electron:main:debug # 打开主界面
 
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
 ```
 
 ### Customize configuration
