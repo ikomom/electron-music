@@ -1,95 +1,148 @@
 <template>
   <div class="home">
-    <img
-      alt="Vue logo"
-      src="../../assets/logo.png"
-    >
-    你好世界，好不好
-    <el-button
-      @click="increase"
-      type="primary"
-    >
-      加1s
-    </el-button>
-    <el-button @click="reset">
-      reset
-    </el-button>
-    <el-button @click="getBaidu">
-      getBaidu
-    </el-button>
     <el-carousel
-      :interval="4000"
+      trigger="click"
+      :interval="8000"
       type="card"
-      height="200px"
+      :height="bannerHeight + 'px'"
     >
       <el-carousel-item
         v-for="(item, index) in bannerList"
         :key="index"
       >
         <el-image
+          style="height: 100%"
           draggable="false"
           :src="item.imageUrl"
         />
-        <!--        <h3 class="medium">-->
-        <!--          {{ item }}-->
-        <!--        </h3>-->
+        <span class="label">{{ item.typeTitle }}</span>
       </el-carousel-item>
     </el-carousel>
-    <HelloWorld
-      class="dragButton"
-      :msg="`Welcome to Your Vue.js App ${index}`"
-    />
+    <el-card
+      v-for="item in NAVS"
+      :key="item.key"
+      style="margin-bottom: 10px;"
+      shadow="hover"
+      :body-style="{paddingBottom: 0}"
+    >
+      <div slot="header">
+        {{ item.name }}
+      </div>
+
+      <el-row>
+        <template v-for="(chunked, index) in chunkArr($store.state.home[item.key])">
+          <el-row
+            :gutter="16"
+            type="flex"
+            :key="index"
+          >
+            <el-col
+              :span="chunked.length < 6 ? 24 /chunked.length : 5"
+              v-for="cell in chunked"
+              :key="cell.id"
+              style="text-align: center;margin-bottom: 16px"
+            >
+              <el-button
+                style="padding: 5px"
+                @click="onCellClick(cell)"
+              >
+                <el-image
+                  lazy
+                  fit="contain"
+                  draggable="false"
+                  :src="cell.picUrl"
+                />
+              </el-button>
+              <span style="word-break: break-word"> {{ cell.name }}</span>
+            </el-col>
+          </el-row>
+        </template>
+      </el-row>
+    </el-card>
+    <audio ref="audio" />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
+import {mapState} from "vuex";
+import chunk from 'lodash/chunk'
+import {getUrl} from "@/utils/song";
 
-import HelloWorld from "@/components/HelloWorld";
-import {getBanner} from "@/api/banner";
-import log from "@/utils/log-util";
+const NAVS = [
+  {
+    name: "推荐歌单",
+    key: "personalizedPlaylist",
+  },
+  {
+    name: "独家放送",
+    key: "privateContentList",
+  },
+  {
+    name: "最新音乐",
+    key: "newSongList",
+  },
+  {
+    name: "推荐MV",
+    key: "recommendMvList",
+  },
+  {
+    name: "主播电台",
+    key: "recommendDjList",
+  },
+];
 
 export default {
   name: 'Home',
-  components: {
-    HelloWorld
-  },
   data() {
     return {
-      index: 0,
-      bannerList: []
+      NAVS,
+      bannerHeight: 200,
+      imgHeight: 380
     }
   },
-  created() {
-    console.log('home ')
+  computed: {
+    ...mapState('home', ['bannerList'])
+  },
+  mounted () {
+    this.setSize();
+    window.addEventListener('resize', this.setSize, false);
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.setSize)
   },
   methods: {
-    getBaidu() {
-      getBanner().then(res => {
-        log('getBanner', res)
-        if (res.code === 200) {
-          this.bannerList = res.banners
-        }
+    setSize() {
+      // 最大适配2560分辨率
+      this.bannerHeight = this.imgHeight / 2560 * document.documentElement.clientWidth
+      console.log('bannerHeight', this.bannerHeight, document.documentElement.clientWidth)
+    },
+    chunkArr(arr) {
+      // todo 缓存渲染结果
+      return chunk(arr, arr.length > 6 ? 6 : arr.length).slice(0, 2)
+    },
+    onCellClick(item) {
+      console.log('item', item)
+      getUrl(item.id).then(songUrl => {
+        console.log('url', songUrl)
+        this.$refs.audio.src = songUrl
+        this.$refs.audio.play()
       })
-    },
-    increase() {
-      this.index++
-    },
-    reset() {
-      this.index = 0
-      // eslint-disable-next-line no-debugger
-      debugger
     }
   }
 }
 </script>
 <style scoped lang="scss">
 .home {
-  padding: 10px;
-  border: 1px solid $test-red;
+  padding: 10px 30px;
 
-  .dragButton {
-    @include app-region-draggable(no-drag);
+  .label {
+    background: red;
+    color: #ffffff;
+    font-size: 13px;
+    padding: 2px 8px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
   }
 
   .el-carousel__item:nth-child(2n) {

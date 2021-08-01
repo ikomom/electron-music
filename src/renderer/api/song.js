@@ -26,8 +26,12 @@ export function getLyric(id) {
     });
 }
 
-export function getNewSong() {
-    return request.get("/personalized/newsong");
+export function getNewSong(limit = 10) {
+    return request.get("/personalized/newsong", {
+      params: {
+        limit
+      }
+    });
 }
 
 // 心动模式 /playmode/intelligence/list?id=33894312&pid=24381616

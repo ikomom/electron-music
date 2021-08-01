@@ -24,7 +24,7 @@ import {recommendMap} from "@/router/modules/recommend";
 export default {
   name: "BaseAside",
   created () {
-    console.log(this.$route, recommendMap)
+    // console.log(this.$route, recommendMap)
   },
   data () {
     return {

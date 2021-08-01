@@ -2,7 +2,7 @@ import axios from "axios"
 import store from '@/store'
 import { Notification } from 'element-ui';
 
-const baseURL = 'http://139.9.230.159:3000'
+const baseURL = process.env.BASIC_URL || 'http://127.0.0.1:3000'
 
 const request = axios.create({
   baseURL: baseURL, // api base_url

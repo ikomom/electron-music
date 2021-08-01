@@ -29,7 +29,7 @@ const routes = [
   {
     path: '/tray',
     name: 'Tray',
-    component: () => import(/* webpackChunkName: "Tray" */'../views/Tray')
+    component: () => import(/* webpackChunkName: "Tray" */'../views/Tray/index')
   }
 ]
 

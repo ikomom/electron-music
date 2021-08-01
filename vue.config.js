@@ -8,13 +8,13 @@ function resolve(dir) {
 module.exports = {
   assetsDir: 'public',
   // productionSourceMap: true,
-  // devServer: {
-    // open: !process.argv.includes("electron:serve"),
-    // host: "localhost",
-    // port: 9080,
-    // https: false,
-    // hotOnly: false,
-  // },
+  devServer: {
+    open: !process.argv.includes("electron:serve"),
+    host: "localhost",
+    port: 8080,
+    https: false,
+    hotOnly: false,
+  },
   configureWebpack: {
     devtool: 'source-map',
     entry: "./src/renderer/main.js",
@@ -110,7 +110,7 @@ module.exports = {
     electronBuilder: {
       nodeIntegration: true, // 渲染进程可以使用node api
       outputDir: "dist/electron",
-      mainProcessFile: 'src/main/background.js',
+      mainProcessFile: 'src/main/background.js',// 主进程入口
       mainProcessWatch: ["src/main"],
       // 打包选项
       builderOptions: {
@@ -171,7 +171,6 @@ module.exports = {
           // 创建开始菜单图标
           createStartMenuShortcut: true,
         },
-
       },
       chainWebpackMainProcess: (config) => {
         config.plugin("define").tap((args) => {

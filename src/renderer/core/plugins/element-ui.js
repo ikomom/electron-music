@@ -29,7 +29,7 @@ import {
   // DatePicker,
   // TimeSelect,
   // TimePicker,
-  // Popover,
+  Popover,
   // Tooltip,
   // Breadcrumb,
   // BreadcrumbItem,
@@ -70,7 +70,7 @@ import {
   // Divider,
   Image,
   // Calendar,
-  // Backtop,
+  Backtop,
   // PageHeader,
   // CascaderPanel,
   Loading,
@@ -112,7 +112,7 @@ Vue.use(ButtonGroup);
 // Vue.use(DatePicker);
 // Vue.use(TimeSelect);
 // Vue.use(TimePicker);
-// Vue.use(Popover);
+Vue.use(Popover);
 // Vue.use(Tooltip);
 // Vue.use(Breadcrumb);
 // Vue.use(BreadcrumbItem);
@@ -153,7 +153,7 @@ Vue.use(Footer);
 // Vue.use(Divider);
 Vue.use(Image);
 // Vue.use(Calendar);
-// Vue.use(Backtop);
+Vue.use(Backtop);
 // Vue.use(PageHeader);
 // Vue.use(CascaderPanel);
 
