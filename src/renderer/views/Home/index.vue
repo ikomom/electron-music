@@ -47,7 +47,6 @@
                 @click="onCellClick(cell)"
               >
                 <el-image
-                  lazy
                   fit="contain"
                   draggable="false"
                   :src="cell.picUrl"
@@ -59,7 +58,6 @@
         </template>
       </el-row>
     </el-card>
-    <audio ref="audio" />
   </div>
 </template>
 
@@ -124,8 +122,7 @@ export default {
       console.log('item', item)
       getUrl(item.id).then(songUrl => {
         console.log('url', songUrl)
-        this.$refs.audio.src = songUrl
-        this.$refs.audio.play()
+        // todo
       })
     }
   }
