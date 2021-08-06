@@ -2,6 +2,7 @@ import Vue from 'vue';
 import {
   // Pagination,
   // Dialog,
+  Avatar,
   // Autocomplete,
   // Dropdown,
   // DropdownMenu,
@@ -79,12 +80,13 @@ import {
   Notification
 } from 'element-ui';
 // 主题
-import '../../theme/element-variables.scss'
+import '@/assets/theme/element-variables.scss'
 
 // Vue.prototype.$ELEMENT = { size: 'small', zIndex: 3000 };
 
 // Vue.use(Pagination);
 // Vue.use(Dialog);
+Vue.use(Avatar);
 // Vue.use(Autocomplete);
 // Vue.use(Dropdown);
 // Vue.use(DropdownMenu);

@@ -1,6 +1,8 @@
 <template>
   <el-container>
-    <el-header>Headers</el-header>
+    <el-header>
+      <Header />
+    </el-header>
     <el-container>
       <el-aside width="200px">
         <BaseAside />
@@ -12,35 +14,21 @@
     <el-footer>
       <play-bar />
     </el-footer>
-
     <el-backtop
       target=".el-main"
       :bottom="100"
       :right="15"
-    >
-      <!--      <div-->
-      <!--        style="{-->
-      <!--        height: 100%;-->
-      <!--        width: 100%;-->
-      <!--        background-color: #f2f5f6;-->
-      <!--        box-shadow: 0 0 6px rgba(0,0,0, .12);-->
-      <!--        text-align: center;-->
-      <!--        line-height: 40px;-->
-      <!--        color: #1989fa;-->
-      <!--      }"-->
-      <!--      >-->
-      <!--        UP-->
-      <!--      </div>-->
-    </el-backtop>
+    />
   </el-container>
 </template>
 
 <script>
 import BaseAside from "@/components/BaseAside";
 import PlayBar from "@/views/components/PlayBar";
+import Header from "@/views/components/Header";
 export default {
   name: "BaseLayout",
-  components: {PlayBar, BaseAside}
+  components: {Header, PlayBar, BaseAside}
 }
 </script>
 
@@ -51,10 +39,13 @@ $footer-height: 60px;
 .el-container {
   height: calc(100vh - #{$header-height} - #{$footer-height});
 }
-.el-header, .el-footer {
-  background-color: #B3C0D1;
-  color: #333;
-  line-height: $header-height;
+.el-header {
+  padding: 0;
+  height: #{$header-height};
+}
+.el-footer {
+  padding: 0;
+  height: #{$footer-height};
 }
 
 .el-aside {
@@ -63,9 +54,7 @@ $footer-height: 60px;
 
 .el-main {
   background-color: #E9EEF3;
-  color: #333;
-  /*text-align: center;*/
-  /*line-height: 160px;*/
+  padding: 0
 }
 
 </style>

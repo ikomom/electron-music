@@ -1,6 +1,7 @@
 <template>
   <svg
     class="svg-icon"
+    :style="hoverStyle"
     aria-hidden="true"
   >
     <use :xlink:href="iconName" />
@@ -15,26 +16,41 @@ export default {
       type: String,
       required: true
     },
-    iconPrefix: {// 本机assets\svg下默认icon
+    // 本机assets\svg下默认icon前缀
+    iconPrefix: {
       type: String,
       default: 'icon-'
+    },
+    hoverColor: {
+      type: String,
+      default: ''
     }
   },
   computed: {
     iconName({iconPrefix, iconClass}) {
       return `#${iconPrefix}${iconClass}`
+    },
+    hoverStyle({hoverColor}) {
+      return hoverColor ? {
+        '--hover-color': hoverColor,
+        cursor: 'pointer'
+      } : undefined
     }
   }
 }
 </script>
 
-<style>
+<style scoped lang="scss">
 .svg-icon {
   width: 1em;
   height: 1em;
-  /*vertical-align: -0.15em;*/
   fill: currentColor;
   overflow: hidden;
+  --hover-color: currentColor;
+
+  &:hover {
+    color: var(--hover-color);
+  }
 }
 </style>
 

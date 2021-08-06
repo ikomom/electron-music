@@ -70,16 +70,16 @@ module.exports = {
     sourceMap: !isProd,
     // css预设器配置项
     loaderOptions: {
-      less: {
-        modifyVars: {
-          "primary-color": "#c62f2f",
-          "link-color": "#c62f2f",
-          "border-radius-base": "4px",
-        },
-        javascriptEnabled: true,
-      },
+      // less: {
+      //   modifyVars: {
+      //     "primary-color": "#c62f2f",
+      //     "link-color": "#c62f2f",
+      //     "border-radius-base": "4px",
+      //   },
+      //   javascriptEnabled: true,
+      // },
       scss: {
-        additionalData: `@import "~@/theme/common.scss";`
+        additionalData: `@import "~@/assets/theme/common.scss";`
       }
     },
     requireModuleExtension: true,

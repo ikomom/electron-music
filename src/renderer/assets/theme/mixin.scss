@@ -1,0 +1,393 @@
+// 区域可拖拽
+@mixin app-region-draggable($drag) {
+  -webkit-app-region: $drag;
+}
+
+// 自适应grid宽度
+@mixin grid-layout($gridGap: 20px, $min: 220px, $max: 1fr) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax($min, $max));
+  grid-gap: $gridGap;
+}
+
+/*弹性盒子（传入null不设置该属性）*/
+@mixin flexBox($direction: row, $justify: null, $align: null, $flex-wrap: null) {
+  display: flex;
+  @if ($direction!=null) {
+    flex-direction: $direction;
+  }
+  @if ($justify!=null) {
+    justify-content: $justify;
+  }
+  @if ($align!=null) {
+    align-items: $align;
+  }
+  @if ($flex-wrap != null) {
+    flex-wrap: $flex-wrap;
+  }
+}
+
+/*绝对定位  参数顺序：上右下左*/
+@mixin positionAbsolute($top:null,$right:null,$bottom:null,$left:null) {
+  position: absolute;
+  @if ($left!="" && $left!=null) {
+    left: $left;
+  }
+  @if ($right!="" && $right!=null) {
+    right: $right;
+  }
+  @if ($top!="" && $top!=null) {
+    top: $top;
+  }
+  @if ($bottom!="" && $bottom!=null) {
+    bottom: $bottom;
+  }
+}
+
+/*左浮动*/
+@mixin float-left($width:19%,$margin-right:1.2%) {
+  width: $width;
+  float: left;
+  @if ($margin-right!=null) {
+    margin-right: $margin-right;
+  }
+}
+
+/*右浮动*/
+@mixin float-Right($width:19%,$margin-left:1.2%) {
+  width: $width;
+  float: right;
+  @if ($margin-left!=null) {
+    margin-left: $margin-left;
+  }
+}
+
+/*渐变(从上到下）*/
+@mixin linear-gradient($direction:bottom,$color1:transparent,$color2:#306eff,$color3:transparent) {
+  //background: -webkit-linear-gradient($direction,$colorTop, $colorCenter, $colorBottom); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient($direction, $color1, $color2, $color3); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient($direction, $color1, $color2, $color3); /* Firefox 3.6 - 15 */
+  background: linear-gradient(to $direction, $color1, $color2, $color3); /* 标准的语法 */
+}
+
+/* 行高 */
+@mixin line-height($height:30px,$line-height:30px) {
+  @if ($height != null) {
+    height: $height;
+  }
+  @if ($line-height!=null) {
+    line-height: $line-height;
+  }
+}
+
+/* 画三角形 */
+@mixin triangle($width:10px,$direction:top,$color:$bgBlueLight) {
+  border: $width solid transparent;
+  @if ($direction == top) { // 上三角
+    border-bottom-color: $color;
+  }
+  @if ($direction == bottom) { // 下三角
+    border-top-color: $color;
+  }
+  @if ($direction == left) { // 左三角
+    border-right-color: $color;
+  }
+  @if ($direction == right) { // 右三角
+    border-left-color: $color;
+  }
+}
+
+/* 文本阴影 */
+@mixin text-show($h-shadow:0px, $v-shadow:0px, $blur:10px, $color:rgba(0,180,255,0.7)) {
+  text-shadow: $h-shadow $v-shadow $blur $color;
+}
+
+/* 链接样式 */
+@mixin hoverStyle($style:(color:#d9fdff),$hoverStyle:(color:#306eff)) {
+  text-decoration: none;
+  @each $key, $value in $style {
+    #{$key}: #{$value};
+  }
+  @if ($hoverStyle!=null & & $hoverStyle!="") {
+    &:hover {
+      @each $key, $value in $hoverStyle {
+        #{$key}: #{$value};
+      }
+    }
+  }
+}
+
+/* 定义滚动条样式 圆角和阴影不需要则传入null */
+@mixin scrollBar($width:10px,$height:10px,$outColor:$bgColor,$innerColor:$bgGrey,$radius:5px,$shadow:null) {
+  /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+  &::-webkit-scrollbar {
+    width: $width;
+    height: $height;
+    background-color: $outColor;
+  }
+
+  /*定义滚动条轨道 内阴影+圆角*/
+  &::-webkit-scrollbar-track {
+    @if ($shadow!=null) {
+      -webkit-box-shadow: $shadow;
+    }
+    @if ($radius!=null) {
+      border-radius: $radius;
+    }
+    background-color: $outColor;
+  }
+
+  /*定义滑块 内阴影+圆角*/
+  &::-webkit-scrollbar-thumb {
+    @if ($shadow!=null) {
+      -webkit-box-shadow: $shadow;
+    }
+    @if ($radius!=null) {
+      border-radius: $radius;
+    }
+    background-color: $innerColor;
+    border: 1px solid $innerColor;
+  }
+}
+
+/* css3动画 默认3s宽度到200px */
+@mixin animation($from:(width:0px),$to:(width:200px),$name:mymove,$animate:mymove 2s 1 linear infinite) {
+  -webkit-animation: $animate;
+  -o-animation: $animate;
+  animation: $animate;
+  @keyframes #{$name}
+  {
+    from {
+      @each $key, $value in $from {
+        #{$key}: #{$value};
+      }
+    }
+    to {
+      @each $key, $value in $to {
+        #{$key}: #{$value};
+      }
+    }
+  }
+
+  @-webkit-keyframes #{$name}
+  {
+    from {
+      @each $key, $value in $from {
+        $key: $value;
+      }
+    }
+    to {
+      @each $key, $value in $to {
+        $key: $value;
+      }
+    }
+  }
+}
+
+/* 圆形盒子 */
+@mixin circle($size: 11px,$bg: #fff) {
+  border-radius: 50%;
+  width: $size;
+  height: $size;
+  line-height: $size;
+  text-align: center;
+  background: $bg;
+}
+
+/* placeholder */
+@mixin placeholder($color: #bbb) {
+  // Firefox
+  &::-moz-placeholder {
+    color: $color;
+    opacity: 1;
+  }
+  // Internet Explorer 10+
+  &:-ms-input-placeholder {
+    color: $color;
+  }
+  // Safari and Chrome
+  &::-webkit-input-placeholder {
+    color: $color;
+  }
+
+  &:placeholder-shown {
+    text-overflow: ellipsis;
+  }
+}
+/* 单行文本省略 */
+@mixin textOverflow($width:100%, $display:block) {
+  width: $width;
+  display: $display;
+  white-space: nowrap;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+/* 多行文字超出显示省略号 */
+@mixin ellipsisMultiline($number: 1) {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: $number;
+}
+
+/* 清除浮动 */
+@mixin clearfix {
+  &:after {
+    clear: both;
+    content: '.';
+    display: block;
+    height: 0;
+    line-height: 0;
+    overflow: hidden;
+  }
+  *height: 1%;
+}
+
+/**
+* 真.1px边框
+* $directionMaps {List}: 多个方向边框, 默认值为bottom, 你可以根据需要传入(top, left, bottom, right) 4个方向;
+* $color {Color} 边框的颜色, 默认#ccc;
+* $radius {List} 4个圆角半径, 默认0;
+* $position {String} 一个高级设置, 一般都不需要改动, 由于细边框的实现使用了css的伪类, 所以为了规避可能出现的样式冲突, 我们可以自己指定使用:after还是:before, 默认after;
+*/
+@mixin thinBorder(
+  $directionMaps: bottom,
+  $color: #ccc,
+  $radius: (
+    0,
+    0,
+    0,
+    0
+  ),
+  $position: after
+) {
+  // 是否只有一个方向
+  $isOnlyOneDir: string==type-of($directionMaps);
+
+  @if ($isOnlyOneDir) {
+    $directionMaps: ($directionMaps);
+  }
+
+  @each $directionMap in $directionMaps {
+    border-#{$directionMap}: 1px solid $color;
+  }
+
+  // 判断圆角是list还是number
+  @if (list==type-of($radius)) {
+    border-radius: nth($radius, 1)
+    nth($radius, 2)
+    nth($radius, 3)
+    nth($radius, 4);
+  } @else {
+    border-radius: $radius;
+  }
+
+  @media only screen and (-webkit-min-device-pixel-ratio: 2) {
+    & {
+      position: relative;
+
+      // 删除1像素密度比下的边框
+      @each $directionMap in $directionMaps {
+        border-#{$directionMap}: none;
+      }
+    }
+
+    &:#{$position} {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      width: 200%;
+      height: 200%;
+      transform: scale(0.5);
+      box-sizing: border-box;
+      padding: 1px;
+      transform-origin: 0 0;
+      pointer-events: none;
+      border: 0 solid $color;
+
+      @each $directionMap in $directionMaps {
+        border-#{$directionMap}-width: 1px;
+      }
+
+      // 判断圆角是list还是number
+      @if (list==type-of($radius)) {
+        border-radius: nth($radius, 1) *
+          2
+        nth($radius, 2) *
+          2
+        nth($radius, 3) *
+          2
+        nth($radius, 4) *
+          2;
+      } @else {
+        border-radius: $radius * 2;
+      }
+    }
+  }
+
+  @media only screen and (-webkit-min-device-pixel-ratio: 3) {
+    &:#{$position} {
+      // 判断圆角是list还是number
+      @if (list==type-of($radius)) {
+        border-radius: nth($radius, 1) *
+          3
+        nth($radius, 2) *
+          3
+        nth($radius, 3) *
+          3
+        nth($radius, 4) *
+          3;
+      } @else {
+        border-radius: $radius * 3;
+      }
+
+      width: 300%;
+      height: 300%;
+      transform: scale(0.3333);
+    }
+  }
+}
+
+/*
+一个"半圆边框"旋转的loading
+ */
+@mixin loading-half-circle($width: 1em) {
+  display: inline-block;
+  height: $width;
+  width: $width;
+  border-radius: $width;
+  border-style: solid;
+  border-width: $width/10;
+  border-color: transparent currentColor transparent transparent;
+  animation: rotate 0.6s linear infinite;
+  vertical-align: middle;
+}
+/**
+* 棋盘背景
+* @param {Color} 背景色
+*/
+@mixin bgChessboard($color: #aaa) {
+  background-image: linear-gradient(
+      45deg,
+      $color 25%,
+      transparent 25%,
+      transparent 75%,
+      $color 75%,
+      $color
+  ),
+  linear-gradient(
+      45deg,
+      $color 26%,
+      transparent 26%,
+      transparent 74%,
+      $color 74%,
+      $color
+  );
+  background-size: 10vw 10vw;
+  background-position: 0 0, 5vw 5vw;
+}
