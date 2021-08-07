@@ -10,6 +10,19 @@ export default {
     playState: PLAY_STATUS.IDLE, // 播放状态
   },
   getters: {},
-  mutations: {},
-  actions: {}
+  mutations: {
+    PLAY_MUSIC(state, payload = {}) {
+      state.currentMusic = payload
+      state.mode = PLAY_MODE.MUSIC
+      state.playState = PLAY_STATUS.PLAY
+      if (!state.playList.find(l => l.id === payload.id)) {
+        state.playList.push(payload)
+      }
+    },
+    SET_PLAY_STATE(state, payload) {
+      state.playState = payload || PLAY_STATUS.IDLE
+    }
+  },
+  actions: {
+  }
 }

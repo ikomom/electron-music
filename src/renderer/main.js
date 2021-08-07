@@ -8,6 +8,7 @@ import Initializer from "@/core/bootStrap";
 import '@/core/plugins/global-use'
 import '@/core/plugins/element-ui'
 import {waitInstance} from "@/core/plugins/vue-wait";
+import '@/utils/filter'
 
 Vue.config.productionTip = false
 

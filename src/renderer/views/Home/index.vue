@@ -122,7 +122,14 @@ export default {
       console.log('item', item)
       getUrl(item.id).then(songUrl => {
         console.log('url', songUrl)
-        // todo
+        if (songUrl) {
+          this.$store.commit('play/PLAY_MUSIC', {
+            ...item,
+            songUrl: songUrl
+          })
+        } else {
+         this.$message.warning("未开发")
+        }
       })
     }
   }

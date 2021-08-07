@@ -3,6 +3,7 @@
     class="svg-icon"
     :style="hoverStyle"
     aria-hidden="true"
+    @click="onClick"
   >
     <use :xlink:href="iconName" />
   </svg>
@@ -35,6 +36,11 @@ export default {
         '--hover-color': hoverColor,
         cursor: 'pointer'
       } : undefined
+    }
+  },
+  methods: {
+    onClick(e) {
+      this.$emit('click', e)
     }
   }
 }
