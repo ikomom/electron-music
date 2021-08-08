@@ -16,7 +16,9 @@
               style="display: none"
             >({{ '芭蕾短裙' }})</span>
           </div>
-          <div>{{ currentMusic.song.artists.map(i => i.name).join(' / ') }}</div>
+          <div class="label">
+            {{ currentMusic.song.artists.map(i => i.name).join(' / ') }}
+          </div>
         </div>
       </template>
     </div>
@@ -45,14 +47,36 @@
       <progress-bar
         :max-time="maxTime"
         :current="currentTime"
+        @onDrag="onProcessDrag"
+        @onPercentChange="onPercentChange"
       />
     </div>
     <div class="play-other">
-      <m-space>
+      <m-space :size="20">
         <icon-svg
-          icon-class="voice"
-          style="font-size: 18px"
+          icon-class="single"
+          style="font-size: 20px;"
+          :style="{color: loop ? 'red' : 'currentColor'}"
+          @click="loop = !loop"
         />
+        <el-popover
+          placement="top-start"
+          width="80"
+          trigger="hover"
+        >
+          <process-bar
+            :percentage="volume * 100"
+            @onPercent="setVolume"
+          />
+          <icon-svg
+            :icon-class="volume ? 'voice' : 'muted'"
+            style="font-size: 18px"
+            hover-color="red"
+            slot="reference"
+            @click="onVolumeClick"
+          />
+        </el-popover>
+
         <icon-svg
           icon-class="playList"
           style="font-size: 18px"
@@ -81,6 +105,7 @@ import {PLAY_STATUS} from "@/utils/constant";
 import ProgressBar from "@/views/components/PlayBar/ProgressBar";
 import MSpace from "@/components/Space";
 import {mapState} from "vuex";
+import ProcessBar from "@/components/ProcessBar";
 
 const videoIcon = {
   [PLAY_STATUS.IDLE]: 'play',
@@ -88,16 +113,16 @@ const videoIcon = {
   [PLAY_STATUS.PAUSE]: 'play'
 }
 
-
 export default {
   name: "PlayBar",
-  components: {MSpace, ProgressBar},
+  components: {ProcessBar, MSpace, ProgressBar},
   data() {
     return {
       loop: false,
       maxTime: undefined,
       currentTime: undefined,
-      circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      volume: 0.3,
+      lastVolume: 0.3
     }
   },
   computed: {
@@ -105,6 +130,9 @@ export default {
       return videoIcon[this.playState]
     },
     ...mapState('play', ['currentMusic', 'playState'])
+  },
+  mounted() {
+    this.setVolume(this.volume)
   },
   methods: {
     onProgress() {
@@ -129,9 +157,34 @@ export default {
     },
     onEnd(e) {
       console.log('onEnd', e)
+      if (!this.loop) {
+        this.$store.commit("play/SET_PLAY_STATE", PLAY_STATUS.PAUSE)
+      }
     },
     onError(e) {
       console.log('onError', e)
+    },
+    setVolume(volume = 0) {
+      this.lastVolume = this.volume
+      this.$refs.audio.volume = volume
+      this.volume = volume
+    },
+    onVolumeClick() {
+      if (this.volume) {
+        this.setVolume(0)
+      } else {
+        this.setVolume(this.lastVolume)
+      }
+    },
+    onProcessDrag(isDrag) {
+      if (isDrag) {
+        this.$store.commit("play/SET_PLAY_STATE", PLAY_STATUS.PAUSE)
+      } else {
+        this.$store.commit("play/SET_PLAY_STATE", PLAY_STATUS.PLAY)
+      }
+    },
+    onPercentChange({currentTime}) {
+      this.$refs.audio.currentTime = currentTime
     },
     onClickPlayBtn() {
       if (this.currentMusic.id) {
@@ -198,6 +251,7 @@ export default {
 
     .label {
       color: $label-gray;
+      font-size: 14px;
     }
   }
 

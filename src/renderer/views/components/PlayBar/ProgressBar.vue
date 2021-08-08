@@ -1,16 +1,27 @@
 <template>
-  <div class="progress-bar">
+  <div
+    class="progress-bar"
+    @mouseleave="isMouseDown = false"
+  >
     {{ current | timeFormat }}
     <div
       class="process"
-      @mousemove="onMouseMoveAtProcess"
-      @mouseleave="onMouseLeaveAtProcess"
+      ref="process"
+      @mouseenter="hover = true"
+      @mouseleave="hover = false"
+      @click="onClick"
     >
       <el-progress
         :percentage="percentage"
         :show-text="false"
+        :style="barStyle"
       />
-      <!--      <span class="handle" />-->
+      <span
+        class="handle"
+        :style="handleStyle"
+        @mousedown="isMouseDown = true"
+        @mouseup="isMouseDown = false"
+      />
     </div>
     {{ maxTime | timeFormat }}
   </div>
@@ -18,7 +29,7 @@
 
 <script>
 
-import { timeFormat} from "@/utils/common";
+import {timeFormat} from "@/utils/common";
 
 export default {
   name: "ProgressBar",
@@ -34,24 +45,62 @@ export default {
   },
   data() {
     return {
+      hover: false,
+      isMouseDown: false,
     }
   },
   computed: {
-    percentage({current, maxTime}){
-      return Math.floor(current / maxTime * 100)
-    }
+    percentage({current, maxTime}) {
+      return Math.floor(current / maxTime * 100) || 0
+    },
+    barStyle() {
+      return {
+        '--bar-height': this.hover ? '7px' : '3px',
+        '--bar-transition': this.isMouseDown ? 'none' : 'width .2s ease'
+      }
+    },
+    handleStyle({percentage, hover}) {
+      if (!hover) {
+        return {display: 'none'}
+      }
+      return {
+        left: (percentage / 100 * this.$refs.process?.getBoundingClientRect().width - 6 || 0) + 'px',
+      }
+    },
   },
   filters: {
     timeFormat(val) {
       return timeFormat(val)
     }
   },
+  created() {
+    window.addEventListener('mousemove', this.onMouseMoveAtProcess, false)
+  },
+  destroyed() {
+    window.removeEventListener('mousemove', this.onMouseMoveAtProcess)
+  },
   methods: {
     onMouseMoveAtProcess(e) {
-      // console.log('moveProcess', e)
+      if (this.isMouseDown) {
+        // console.log('moveProcess', e.clientX, e)
+        this.changePercent(e.clientX)
+      }
     },
-    onMouseLeaveAtProcess(e) {
-      // console.log('moveLeave', e)
+    onClick(e) {
+      this.changePercent(e.clientX)
+    },
+    changePercent(clientX) {
+      const {left, width} = this.$refs.process.getBoundingClientRect()
+      const percent = (clientX - left) / width
+      const currentTime = percent * this.maxTime
+      this.$emit('onPercentChange', {percent, currentTime})
+    },
+  },
+  watch: {
+    isMouseDown: {
+      handler(val) {
+        this.$emit('onDrag', val)
+      }
     }
   }
 }
@@ -65,6 +114,7 @@ export default {
   color: $label-gray;
   gap: 10px;
   --bar-height: 3px;
+  user-select: none;
 
   .process {
     max-width: 40vw;
@@ -72,29 +122,33 @@ export default {
     position: relative;
 
     .handle {
-      //display: none;
       position: absolute;
       border-radius: 50%;
-      border: 1px solid red;
-      background: #306eff;
-      width: 10px;
-      height: 10px;
+      background: #409EFF;
+      width: 12px;
+      height: 12px;
       top: -2px;
       left: 2px;
       cursor: pointer;
+
     }
 
     ::v-deep {
       .el-progress {
         width: 100%;
         max-width: 40vw;
-        .el-progress-bar__outer{
+
+        .el-progress-bar__outer {
           height: var(--bar-height) !important;
           margin-top: 1px;
+
           &:hover {
-            height: 7px !important;
             cursor: pointer;
           }
+        }
+
+        .el-progress-bar__inner {
+          transition: var(--bar-transition)
         }
       }
     }

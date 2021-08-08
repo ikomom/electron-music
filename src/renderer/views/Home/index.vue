@@ -11,7 +11,7 @@
         :key="index"
       >
         <el-image
-          style="height: 100%"
+          style="height: 100%;width: 100%"
           draggable="false"
           :src="item.imageUrl"
         />
